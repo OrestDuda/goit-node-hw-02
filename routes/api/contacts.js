@@ -6,10 +6,11 @@ const {
   getById,
   addContact,
   removeContact,
-  updateContact
+  updateContact,
+  updateStatusContact
 } = require('../../controllers/contactsController')
 
-const {addContactValidation, updateContactValidation} = require('../../middlewares/validationMiddleware')
+const { addContactValidation, updateContactValidation, updateStatusContactValidation } = require('../../middlewares/validationMiddleware')
 
 router.get('/', async (req, res, next) => {
   try {
@@ -30,13 +31,9 @@ router.get('/:contactId', async (req, res, next) => {
 })
 
 router.post('/', addContactValidation, async (req, res, next) => {
-  const {
-    name,
-    email,
-    phone
-  } = req.body
   try {
     await addContact(req.body)
+
     res.status(201).json({
       status: 'ok',
       code: 201,
@@ -60,13 +57,26 @@ router.delete('/:contactId', async (req, res, next) => {
 })
 
 router.patch('/:contactId', updateContactValidation, async (req, res, next) => {
-  const { name, email, phone } = req.body
   try {
     const foundContact = getById(req.params.contactId)
     if (foundContact) {
       const updatedContact = await updateContact(req.params.contactId, req.body)
       res.status(200).json({ status: 'ok', code: 200, data: updatedContact })
     }res.status(400).json({ status: 'not ok', code: 400, message: 'not found' })
+  } catch (err) { return err }
+})
+
+router.patch('/:contactId/favorite', updateStatusContactValidation, async (req, res, next) => {
+  try {
+    if (!req.body) {
+      res.status(400).json({ message: 'missing field favorite' })
+    }
+    const updatedStatus = await updateStatusContact(req.params.contactId, req.body)
+    if (updatedStatus) {
+      const updatedContact = await getById(req.params.contactId)
+      res.status(200).json({ status: 'ok', code: 200, data: updatedContact })
+    }
+    res.status(400).json({ status: 'not ok', code: 404, message: 'Not found' })
   } catch (err) { return err }
 })
 
