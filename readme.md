@@ -3,9 +3,10 @@
 ### Запити
 - @ GET /api/contacts - Отримати всі контакти
 - @ GET /api/contacts/:contactId - Отримати контакт по ID
-- @ POST /api/contacts - Потрібно передати body в формате {name, email, phone}. Записує дані в файл
+- @ POST /api/contacts - Потрібно передати body в формате {name, email, phone, [favorite]}. Записує дані в файл
 - @ DELETE /api/contacts/:contactId - Видаляє контакт за вказаним Id
 - @ PUT /api/contacts/:contactId - Потрібно передати body з обновленням потрібного поля і також Id. Змінює дані потрібного Id.
+- @ PUT /api/contacts/:contactId/favorite - Потрібно передати body з новим значенням поля favorite[boolean] і також Id. Змінює favorite потрібного Id.
 
 
 ### Команды:
