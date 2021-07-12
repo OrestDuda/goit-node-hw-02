@@ -35,10 +35,6 @@ const logout = async (userId) => {
   await User.updateOne({ _id: userId }, { $set: { token: null } })
 }
 
-const getCurrentUser = async (userId) => {
-  return User.findOne({ _id: userId })
-}
-
 const updateSubscription = async (userId, body) => {
   if (!User.schema.paths.subscription.enumValues.includes(body.subscription)) {
     throw new errors.ValidationError('Subscription Plan not valid')
@@ -51,6 +47,5 @@ module.exports = {
   signUp,
   login,
   logout,
-  getCurrentUser,
   updateSubscription
 }

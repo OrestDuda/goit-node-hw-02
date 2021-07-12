@@ -13,8 +13,9 @@ const authMiddleware = async (req, res, next) => {
     if (!isUserExist || isUserExist.token !== token) {
       next(new errors.NotAuthorizedError('Not authorized'))
     }
-    req.user = user
+    req.user = isUserExist
     next()
+    return req.user
   } catch (err) {
     next(new errors.NotAuthorizedError('Not authorized'))
   }

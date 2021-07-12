@@ -16,7 +16,7 @@ const logoutController = async (req, res, next) => {
   res.status(204).json({})
 }
 const getCurrentUserController = async (req, res, next) => {
-  const currentUser = await user.getCurrentUser(req.user._id)
+  const currentUser = req.user
   res.status(200).json({ user: { email: currentUser.email, subscription: currentUser.subscription } })
 }
 
