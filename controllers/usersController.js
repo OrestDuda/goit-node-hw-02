@@ -1,5 +1,9 @@
 const user = require('../services/userServices')
 const { User } = require('../db/usersModel')
+const { v4: uuidv4 } = require('uuid')
+const path = require('path')
+const fs = require('fs')
+const Jimp = require('jimp')
 
 const signUpController = async (req, res, next) => {
   const createdUser = await user.signUp(req.body)
@@ -20,9 +24,23 @@ const getCurrentUserController = async (req, res, next) => {
   res.status(200).json({ user: { email: currentUser.email, subscription: currentUser.subscription } })
 }
 
-const updateSubscriptionController = async (req, res, next) => {
-  const currentUser = await user.updateSubscription(req.user._id, req.body)
-  res.status(200).json({ user: { email: currentUser.email, subscription: currentUser.subscription } })
+const updateAvatarController = async (req, res, next) => {
+  const [, extension] = req.file.originalname.split('.')
+  const newName = `${uuidv4()}.${extension}`
+
+  Jimp.read(req.file.path, (err, file) => {
+    if (err) throw err
+    file
+      .resize(250, 250)
+      .quality(100)
+      .write(path.resolve(`./public/avatars/${newName}`)) // save
+    fs.unlink(req.file.path, (err) => {
+      if (err) throw err
+    })
+  })
+
+  const currentUser = await user.updateAvatar(req.user, `./avatars/${newName}`)
+  res.status(200).json({ avatarURL: currentUser.avatarURL })
 }
 
 module.exports = {
@@ -30,5 +48,5 @@ module.exports = {
   loginController,
   logoutController,
   getCurrentUserController,
-  updateSubscriptionController
+  updateAvatarController
 }

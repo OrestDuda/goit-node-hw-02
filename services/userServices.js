@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { User } = require('../db/usersModel')
 const errors = require('../services/errors')
+const gravatar = require('gravatar')
 
 const signUp = async (body) => {
   const userExist = await User.findOne({ email: body.email })
@@ -12,10 +13,11 @@ const signUp = async (body) => {
     email: body.email,
     password: body.password,
     subscription: body.subscription || 'starter',
+    avatarURL: gravatar.url(body.email, { protocol: 'http', s: '250' })
   }
   const user = new User(newUser)
   await user.save()
-  return User.findOne({ email: newUser.email }, { subscription: 1, email: 1, _id: 0 })
+  return User.findOne({ email: newUser.email }, { subscription: 1, email: 1, avatarURL: 1, _id: 0 })
 }
 
 const login = async (body) => {
@@ -35,17 +37,13 @@ const logout = async (userId) => {
   await User.updateOne({ _id: userId }, { $set: { token: null } })
 }
 
-const updateSubscription = async (userId, body) => {
-  if (!User.schema.paths.subscription.enumValues.includes(body.subscription)) {
-    throw new errors.ValidationError('Subscription Plan not valid')
-  }
-  await User.updateOne({ _id: userId }, { $set: { subscription: body.subscription } })
-  return User.findOne({ _id: userId })
+const updateAvatar = async (body, path) => {
+  await User.updateOne({ _id: body._id }, { $set: { avatarURL: path } })
+  return User.findOne({ _id: body._id })
 }
-
 module.exports = {
   signUp,
   login,
   logout,
-  updateSubscription
+  updateAvatar
 }
