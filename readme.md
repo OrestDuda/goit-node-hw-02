@@ -7,7 +7,11 @@
 - @ DELETE /api/contacts/:contactId - Видаляє контакт за вказаним Id
 - @ PUT /api/contacts/:contactId - Потрібно передати body з обновленням потрібного поля і також Id. Змінює дані потрібного Id.
 - @ PUT /api/contacts/:contactId/favorite - Потрібно передати body з новим значенням поля favorite[boolean] і також Id. Змінює favorite потрібного Id.
-
+- @ POST /api/users/signup - Потрібно передати body в якому email і password.
+- @ POST /api/users/login - Потрібно передати body в email і password. Назад вернеться токен
+- @ POST /api/users/logout - В загаловку Authorization потрібно передати токен який видається при логіні, для того щоб видалити токен
+- @ GET /api/users/current - В загаловку Authorization потрібно передати токен який видається при логіні, для того щоб отримати інформацію про користувача
+- @ PATCH /avatars - В загаловку Authorization потрібно передати токен який видається при логіні. В параметрах передається avatar в якому передати файл
 
 ### Команды:
 
