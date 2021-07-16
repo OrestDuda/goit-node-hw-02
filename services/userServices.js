@@ -33,7 +33,7 @@ const signUp = async (body) => {
 
   const msg = {
     to: body.email,
-    from: 'dfrancon.r@gmail.com',
+    from: 'OrestDuda@gmail.com',
     subject: 'Registration',
     text: `Please confirm your email address POST http://localhost:8080/api/users/verify/${code}`,
     html: `Please confirm your email address POST http://localhost:8080/api/users/verify/${code}`
@@ -85,7 +85,7 @@ const signupConfirmation = async (verificationToken) => {
 
   const msg = {
     to: user.email,
-    from: 'dfrancon.r@gmail.com',
+    from: 'OrestDuda@gmail.com',
     subject: 'Registration',
     text: 'Registration successful',
     html: 'Registration successful'
