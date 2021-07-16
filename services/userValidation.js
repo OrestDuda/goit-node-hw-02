@@ -5,7 +5,7 @@ module.exports = {
   userDataValidation: async (req, res, next) => {
     const userValidation = Joi.object({
       // eslint-disable-next-line prefer-regex-literals
-      password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).min(8).max(8).required(),
+      password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).min(8).max(18).required(),
       email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required()
     })
 
