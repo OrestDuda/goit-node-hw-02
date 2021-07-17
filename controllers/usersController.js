@@ -42,11 +42,16 @@ const updateAvatarController = async (req, res, next) => {
   const currentUser = await user.updateAvatar(req.user, `./avatars/${newName}`)
   res.status(200).json({ avatarURL: currentUser.avatarURL })
 }
+const signupConfirmationController = async (req, res, next) => {
+  const { verificationToken } = req.params
+  await user.signupConfirmation(verificationToken)
+}
 
 module.exports = {
   signUpController,
   loginController,
   logoutController,
   getCurrentUserController,
-  updateAvatarController
+  updateAvatarController,
+  signupConfirmationController
 }

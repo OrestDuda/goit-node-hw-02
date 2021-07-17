@@ -11,5 +11,6 @@ router.post('/login', userDataValidation, asyncWrapper(users.loginController))
 router.post('/logout', authMiddleware, asyncWrapper(users.logoutController))
 router.get('/current', authMiddleware, asyncWrapper(users.getCurrentUserController))
 router.patch('/avatars', authMiddleware, uploadMiddleware.single('avatar'), asyncWrapper(users.updateAvatarController))
+router.post('/verify/:verificationToken', asyncWrapper(users.signupConfirmationController))
 
 module.exports = router
